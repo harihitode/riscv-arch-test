@@ -1,0 +1,21 @@
+ifndef LADYBUG_DIR
+    $(error LADYBUG_DIR is undefined)
+endif
+
+RUN_TARGET=\
+	echo "no emulator"
+
+RISCV_CC       ?= clang
+RISCV_OBJDUMP  ?= llvm-objdump
+RISCV_OBJCOPY  ?= llvm-objcopy
+RISCV_CC_OPTS  ?= --target=riscv32-unknwon-elf -march=rv32i -c -fuse-ld=lld -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles
+
+COMPILE_TARGET=\
+	$$(RISCV_CC) $(2) $$(RISCV_CC_OPTS) \
+		-I$(ROOTDIR)/riscv-test-env/ \
+		-I$(ROOTDIR)/riscv-test-env/p/ \
+		-I$(TARGETDIR)/$(RISCV_TARGET)/ \
+		-T$(ROOTDIR)/riscv-test-env/p/link.ld $$< \
+		-o $(work_dir_isa)/$$@; \
+	$$(RISCV_OBJDUMP) -D $(work_dir_isa)/$$@ > $(work_dir_isa)/$$@.objdump
+	$$(RISCV_OBJCOPY) --dump-section .text=$$@.text.bin $$@
