@@ -1,0 +1,43 @@
+LLVM_PREFIX    ?= ~/llvm-project/build/bin/
+RISCV_PREFIX   ?= riscv32-unknown-elf
+RISCV_CC       ?= $(LLVM_PREFIX)clang
+RISCV_OBJDUMP  ?= $(LLVM_PREFIX)llvm-objdump
+RISCV_OBJCOPY  ?= $(LLVM_PREFIX)llvm-objcopy
+RISCV_CC_OPTS  ?= --target=riscv32-unknown-elf -march=rv32i -static -mno-relax -mcmodel=medany -g -fvisibility=hidden -nostdlib -nostartfiles -fuse-ld=lld -DXLEN=$(XLEN) $(RVTEST_DEFINES)
+RISCV_READELF  ?= $(LLVM_PREFIX)llvm-readelf
+
+COMPILE_CMD=\
+	$$(RISCV_CC) $(1) $$(RISCV_CC_OPTS) \
+		-I$(ROOTDIR)/riscv-test-suite/env/ \
+		-I$(TARGETDIR)/$(RISCV_TARGET)/ \
+		-T$(TARGETDIR)/$(RISCV_TARGET)/env/ladybug.ld $$< \
+		-o $$@; \
+	$$(RISCV_OBJCOPY) -O binary -R .signature $$@ $$@.bin; \
+	$$(RISCV_OBJCOPY) -O binary --only-section=.signature $$@ $$@.signature.bin
+
+
+OBJ_CMD = $$(RISCV_OBJDUMP) $$@ -D > $$@.objdump; \
+		  $$(RISCV_OBJDUMP) $$@ --source > $$@.debug; \
+		  $$(RISCV_READELF) -a $$@ > $$@.readelf;     \
+		  xxd -e -p -c 4 $$@.bin > $$@.txt;           \
+		  xxd -e -p -c 4 $$@.signature.bin > $$@.signature
+
+COMPILE_TARGET=\
+		$(COMPILE_CMD); \
+        if [ $$$$? -ne 0 ] ; \
+            then \
+            echo "\e[31m$$(RISCV_CC) failed for target $$(@) \e[39m" ; \
+            exit 1 ; \
+        fi ; \
+		$(OBJ_CMD); \
+        if [ $$$$? -ne 0 ] ; \
+            then \
+            echo "\e[31m $$(RISCV_OBJDUMP) failed for target $$(@) \e[39m" ; \
+            exit 1 ; \
+        fi ;
+
+RUN_CMD=\
+	echo "no emulator for ladybug"
+
+RUN_TARGET=\
+	$(RUN_CMD)

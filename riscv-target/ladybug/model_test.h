@@ -17,18 +17,20 @@
         .align 8; .global end_regstate; end_regstate:                   \
         .word 4;
 
-// The .align 4 ensures that the signature begins at a 16-byte boundary
 #define RVMODEL_HALT                                              \
   csrrsi x0, LADYBUG_CSR_FORCE_QUIT, 0x1;
 
 //TODO: declare the start of your signature region here. Nothing else to be used here.
 // The .align 4 ensures that the signature ends at a 16-byte boundary
 #define RVMODEL_DATA_BEGIN                                              \
+  .pushsection .signature,"aw",@progbits;                               \
   .align 4; .global begin_signature; begin_signature:
 
 //TODO: declare the end of the signature region here. Add other target specific contents here.
+// The .align 4 ensures that the signature begins at a 16-byte boundary
 #define RVMODEL_DATA_END                                                      \
-  .align 4; .global end_signature; end_signature:                             \
+  .global end_signature; end_signature:                                 \
+  .popsection;                                                          \
   RVMODEL_DATA_SECTION
 
 // There is no initialization for ladybug (empty)
