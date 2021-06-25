@@ -1,10 +1,12 @@
-# RISC-V Architecture Test SIG
-
 ## Brief Usage for Ladybug
 
 ``$ make -B RISCV_TARGET=ladybug RISCV_DEVICE=I RISCV_TEST="add-01"``
 
 for add-01.S compliance test. Genereted code is in under work/ dir.
+
+----
+
+# RISC-V Architecture Test SIG
 
 This is a repository for the work of the RISC-V Foundation Architecture Test SIG. The repository owners are:
 
@@ -21,24 +23,24 @@ For contributions and reporting issues please refer to [CONTRIBUTION.md](CONTRIB
 
 ## Test Disclaimers
 
-The following are the exhaustive list of disclaimers that can be used as waivers by target owners 
+The following are the exhaustive list of disclaimers that can be used as waivers by target owners
 when reporting the status of pass/fail on the execution of the architectural suite on their respective targets.
 
-1. The references uploaded for the following misaligned load/store tests will match targets which do 
-   not support misaligned load/stores in hardware. Targets with hardware misaligned support for 
+1. The references uploaded for the following misaligned load/store tests will match targets which do
+   not support misaligned load/stores in hardware. Targets with hardware misaligned support for
    load/stores will fail these tests.
 
    1. rv32i_m/privilege/src/misalign-[lb[u],lh[u],lw,sh,sb,sw]-01.S
    2. rv64i_m/privilege/src/misalign-[lb[u],lh[u],lw[u],ld,sb,sh,sw,sd]-01.S
 
-2. The references uploaded for the following misaligned instruction tests will match targets which 
-   have compressed extension support enabled by default. Targets without the compressed extension 
+2. The references uploaded for the following misaligned instruction tests will match targets which
+   have compressed extension support enabled by default. Targets without the compressed extension
    support will fail the following tests:
    1. rv[32/64]i_m/privilege/src/misalign-b[ge[u],lt[u],eq,ne]-01.S
    2. rv[32/64]i_m/privilege/src/misalign[1,2]-jalr-01.S
 
-3. The machine mode trap handler used in the privilege tests assumes one of the following conditions. 
-   Targets not satisfying any of the following conditions are bound to fail the entire 
+3. The machine mode trap handler used in the privilege tests assumes one of the following conditions.
+   Targets not satisfying any of the following conditions are bound to fail the entire
    rv32i_m/privilege and rv64i_m/privilege tests:
    1. The target must have implemented mtvec which is completely writable by the test in machine mode.
    2. The target has initialized mtvec, before entering the test (via RVMODEL_BOOT), to point to a memory location which has both read and write permissions.
@@ -76,4 +78,3 @@ The files [`COPYING.BSD`](./COPYING.BSD), [`COPYING.APACHE`](./COPYING.APACHE) a
 - [Videos](https://youtu.be/VIW1or1Oubo): This Global Forum 2020 video provides an introduction to the above mentioned tools
 - [riscvOVPsim](https://github.com/riscv-ovpsim/imperas-riscv-tests): Imperas freeware RISC-V reference simulator for compliance testing
 - [riscvOVPsimPlus](https://www.ovpworld.org/riscvOVPsimPlus/): Imperas enhanced freeware RISC-V reference simulator for test development and verification
-
