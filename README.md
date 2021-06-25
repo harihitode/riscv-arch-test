@@ -1,5 +1,10 @@
 # RISC-V Architecture Test SIG
 
+## Brief Usage for Ladybug
+
+``$ make -B RISCV_TARGET=ladybug RISCV_DEVICE=I RISCV_TEST="add-01"``
+
+for add-01.S compliance test. Genereted code is in under work/ dir.
 
 This is a repository for the work of the RISC-V Foundation Architecture Test SIG. The repository owners are:
 
