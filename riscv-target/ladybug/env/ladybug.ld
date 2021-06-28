@@ -1,8 +1,8 @@
 OUTPUT_ARCH("riscv")
 
 MEMORY {
-  cram (rwx)  : ORIGIN = 0x00400000, LENGTH = 512k
-  sigram (rx) : ORIGIN = 0x00500000, LENGTH = 4k
+  cram (rwx)  : ORIGIN = 0x00400000, LENGTH = 2m
+  sigram (rx) : ORIGIN = 0x00700000, LENGTH = 4k
 }
 SECTIONS
 {
