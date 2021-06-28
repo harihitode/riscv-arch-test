@@ -51,7 +51,8 @@
     .string _STR;                                                       \
     .section .text.init;                                                \
     la a0, 20001b;                                                      \
-    jal FN_WriteStr;
+    la a1, FN_WriteStr;                                                 \
+    jalr a1;
 
 #define RSIZE 4
 // _SP = (volatile register)
