@@ -1,11 +1,13 @@
 OUTPUT_ARCH("riscv")
 
 MEMORY {
-  cram (rwx)  : ORIGIN = 0x00400000, LENGTH = 2m
-  sigram (rx) : ORIGIN = 0x00700000, LENGTH = 4k
+  lspm (rw)   : ORIGIN = 0x00000000, LENGTH = 2k
+  cram (rx)   : ORIGIN = 0x00400000, LENGTH = 2m
+  sigram (rw) : ORIGIN = 0x00700000, LENGTH = 4k
 }
 SECTIONS
 {
+  .lspm : { *(.lsmp) } > lspm
   .text.init : { *(.text.init) } > cram
   . = ALIGN(0x1000);
   .tohost : { *(.tohost) } > cram

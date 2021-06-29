@@ -12,10 +12,12 @@
         .align 8; .global tohost; tohost: .dword 0;                     \
         .align 8; .global fromhost; fromhost: .dword 0;                 \
         .popsection;                                                    \
+        .pushsection .lspm;                                             \
         .align 8; .global begin_regstate; begin_regstate:               \
         .word 128;                                                      \
         .align 8; .global end_regstate; end_regstate:                   \
-        .word 4;
+        .word 4;                                                        \
+        .popsection;
 
 #define RVMODEL_HALT                                              \
   csrrsi x0, LADYBUG_CSR_FORCE_QUIT, 0x1;
